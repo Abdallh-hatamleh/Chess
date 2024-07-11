@@ -39,7 +39,7 @@ pieces.forEach(element => {
 });
 board.forEach(row => {
     row.forEach(element => {
-        element.occupied = false;
+        element.occupied = "none";
     });
 });
 function SetBoard()
@@ -53,14 +53,14 @@ row1[5].prepend(whiteBishop.cloneNode());
 row1[6].prepend(whiteKnight.cloneNode());
 row1[7].prepend(whiteRook.cloneNode());
 row1.forEach(element => {
-    element.occupied = true;
+    element.occupied = "white";
 })
 row2.forEach(element => {
-    element.occupied = true;
+    element.occupied = "white";
     element.prepend(whitePawn.cloneNode());
 });
 row7.forEach(element => {
-    element.occupied = true;
+    element.occupied = "black";
     element.prepend(blackPawn.cloneNode());
 });
 row8[0].prepend(blackRook.cloneNode());
@@ -72,7 +72,7 @@ row8[5].prepend(blackBishop.cloneNode());
 row8[7].prepend(blackRook.cloneNode());
 row8[6].prepend(blackKnight.cloneNode());
 row8.forEach(element => {
-    element.occupied = true;
+    element.occupied = "black";
 });
 }
 // function SetCell(cell, piece)
@@ -81,7 +81,6 @@ row8.forEach(element => {
 // }
 const images = document.querySelectorAll("img");
 images.forEach(element => {
-    
     element.addEventListener("dragstart", e =>
     {
         // console.log(222);
@@ -97,12 +96,27 @@ function manageEvents()
         row.forEach(cell => {
                 cell.addEventListener("dragstart", e => {
                     sessionStorage.setItem("id",e.target.parentNode.id);
+                    sessionStorage.setItem("color",e.target.parentNode.occupied);
                     // console.log(e.target.parentNode.id);
                 })
                 cell.addEventListener("dragover", e => {e.preventDefault()});
                 cell.addEventListener("drop", e => {
                     console.log(e.target);
-                    if (e.target.occupied) {
+                    if (e.target.localName == "img") {
+                        // console.log(`move is ${sessionStorage.getItem("color")} to ${e.target.parentNode.occupied}`);
+                        if(sessionStorage.getItem("color") != e.target.parentNode.occupied)
+                        {
+                        cell.innerHTML = "";
+                        const newim = document.createElement("img");
+                        newim.src = e.dataTransfer.getData("Text");
+                        newim.classList.add("pieces");
+                        newim.draggable = true;
+                        document.getElementById(sessionStorage.getItem("id")).innerHTML = "";
+                        document.getElementById(sessionStorage.getItem("id")).occupied = "none";
+                        cell.prepend(newim);
+                        cell.occupied = sessionStorage.getItem("color");    
+                        }  
+                        
                     } 
                     else {
                         // alert("hi");
@@ -111,9 +125,9 @@ function manageEvents()
                         newim.classList.add("pieces");
                         newim.draggable = true;
                         document.getElementById(sessionStorage.getItem("id")).innerHTML = "";
-                        document.getElementById(sessionStorage.getItem("id")).occupied = false;
+                        document.getElementById(sessionStorage.getItem("id")).occupied = "none";
                         e.target.prepend(newim);
-                        cell.occupied = true;    
+                        cell.occupied = sessionStorage.getItem("color");    
                     }
                 })
                 // if(cell.id == "E5" || cell.id == "E6" ) cell.addEventListener("dragover", e => {e.preventDefault()});
@@ -121,4 +135,6 @@ function manageEvents()
         });
     });
 }
+alert("newer");
 SetBoard();
+manageEvents();

@@ -12,15 +12,41 @@ for($i = 1; $i < 9; $i++)
 }
 
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body style="background-color: black;">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+     <style>
+       .board * { 
+    color: white;   
+}
+
+.cell {
+    width: 50px;
+    height: 50px;
+}
+
+.row {
+    display: flex;
+    width: fit-content;
+    align-content: center;
+    text-align: center;
+}
+
+.white-bk {
+    background-color: white;
+}
+
+.green-bk {
+    background-color: green;
+}
+
+#letters {
+    margin-left: 10px;
+}
+
+.pieces {
+    width: 100%;
+    height: 100%;
+}
+     </style>
 <div class="board">
     <?php 
     $isgreen = true;
@@ -56,5 +82,3 @@ for($i = 1; $i < 9; $i++)
 </div>
 </div>
 <script src="script.js"></script>
-</body>
-</html>
